@@ -38,6 +38,8 @@ jobs:
       # Runs alias
       - name: Run alias
         run: |
-          shopt -s expand_aliases; alias la='ls -la'
+          shopt -s expand_aliases; alias la='ls -la';
+          alias lb='ls -lart'
           la
+          lb
 
