@@ -28,6 +28,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Create yaml
         run: |
+          mkdir test-dir && cd test-dir
           cat <<EOF > test-target-cluster.yaml
           apiVersion: v1
           kind: ServiceAccount
@@ -64,11 +65,21 @@ jobs:
             name: argocd-manager
             namespace: kube-system
           EOF
-          ls -lrt
-          mkdir test-dir
-          cp test-target-cluster.yaml test-dir
-          ls -lrt test-dir
-
+          cat test-target-cluster.yaml
+          
+      - name: Create Pull Request
+        #id: cpr
+        uses: peter-evans/create-pull-request@v3
+        #with:
+          #token: ${{ steps.cloud-infra-bot-token.outputs.token }}
+          #commit-message: "live/${{ github.event.inputs.environment }}/${{ github.event.inputs.region }}/${{ github.event.inputs.cluster }}/${{ github.event.inputs.customer_name }}: add new customer"
+          #committer: GitHub <noreply@github.com>
+          #author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          #branch: new-customer-setup-${{ github.event.inputs.customer_name }}
+          #delete-branch: true
+          #title: "${{ github.event.inputs.jira_ticket }} new customer: ${{ github.event.inputs.customer_name }}"
+          #body:
+            
       # Runs a set of commands using the runners shell
       #- name: Run a multi-line script
       #  run: |
