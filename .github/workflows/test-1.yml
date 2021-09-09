@@ -25,7 +25,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
+      # Create external cluster yaml
       - name: Create yaml
         run: |
           mkdir test-dir && cd test-dir
@@ -66,22 +66,47 @@ jobs:
             namespace: kube-system
           EOF
           cat test-target-cluster.yaml
+            
+      # tg apply on external cluster yaml
+      - name: tg apply on external yaml
+        run: |
+          echo Applying the yaml on external cluster...
+          
+      # Get values from external cluster k8s object
+      - name: get k8s object values
+        run: |
+          echo Get k8s object values. Have to do kubectx and execute kubectl command.
+      
+      - name: create yaml for main cluster
+        run: |
+          mkdir main-dir && cd main-dir
+          export token=aaa123bbb
+          cat <<EOF > test-main-cluster.yaml
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: gke-eu1
+            labels:
+              argocd.argoproj.io/secret-type: cluster
+          type: Opaque
+          stringData:
+            name: gke-eu1
+            server: https://gke-eu1.inlets:443
+            config: |
+              {
+                "bearerToken": "${token}",
+                 "tlsClientConfig": {
+                   "insecure": true
+                 }
+              }
+          EOF
+          cat test-main-cluster.yaml
+          
+      # tg apply on main cluster yaml
+      - name: tg apply on main yaml
+        run: |
+          echo Applying the yaml on main cluster...
           
       - name: Create Pull Request
-        #id: cpr
         uses: peter-evans/create-pull-request@v3
-        #with:
-          #token: ${{ steps.cloud-infra-bot-token.outputs.token }}
-          #commit-message: "live/${{ github.event.inputs.environment }}/${{ github.event.inputs.region }}/${{ github.event.inputs.cluster }}/${{ github.event.inputs.customer_name }}: add new customer"
-          #committer: GitHub <noreply@github.com>
-          #author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          #branch: new-customer-setup-${{ github.event.inputs.customer_name }}
-          #delete-branch: true
-          #title: "${{ github.event.inputs.jira_ticket }} new customer: ${{ github.event.inputs.customer_name }}"
-          #body:
-            
-      # Runs a set of commands using the runners shell
-      #- name: Run a multi-line script
-      #  run: |
-      #    echo Add other actions to build,
-      #    echo test, and deploy your project.
+          
