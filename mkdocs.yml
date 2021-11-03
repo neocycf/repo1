@@ -1,0 +1,29 @@
+# Project information
+site_name: Documentation
+#site_url: https://example.com/
+# Repository
+#repo_name: 'marc0olo/mkdocs-submodule-playground'
+#repo_url: 'https://github.com/marc0olo/mkdocs-submodule-playground'
+
+# Theme
+theme:
+  name: readthedocs
+
+#extra:
+#repo_icon: 'github'
+
+# Navigation
+nav:
+  - Introduction: 'index.md'
+  - Teams:
+    - team-a: '!include ./repo2/mkdocs.yml'
+    #  - contraect-maven-plugin: '!include ./contraect-maven-plugin/mkdocs.yml'
+
+plugins:
+  - monorepo
+
+    #site_name: versions/repo2
+
+    #nav:
+    #  - Reference: "index.md"
+
