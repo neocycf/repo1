@@ -6,8 +6,8 @@ metadata:
     github.com/project-slug: neocycf/repo1
     backstage.io/techdocs-ref: dir:.
 spec:
-  type: production
-  lifecycle: service
+  type: service
+  lifecycle: production
   owner: team-a
   providesApis:
     - my-api
