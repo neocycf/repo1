@@ -6,7 +6,7 @@ metadata:
     github.com/project-slug: neocycf/repo1
     backstage.io/techdocs-ref: dir:.
 spec:
-  type: service
+  type: other
   lifecycle: unknown
   owner: team-a
   providesApis:
